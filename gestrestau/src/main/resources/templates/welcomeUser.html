@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" th:href="@{/styleUser.css}" />
+  <title>NutriEat - Commande</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">NutriEat</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="#" :class="{ 'active': divtoShow === 0 }" @click="showDiv1">My account</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" th:if="${niveauAcces >= 2}">Stock display</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" @click="showDiv2" :class="{ 'active': divtoShow === 1 }">My order</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-outline-danger me-2" type="button" href="/">logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container" v-show="divtoShow === 1">
+      <div class="left-section">
+        <h2 style="color: #333333;">Menu</h2>
+        <ul class="menu-list">
+          <li v-for="item in menuItems" :key="item" @click="addToOrder(item)">{{ item }}</li>
+        </ul>
+        <button class="validate-btn" @click="validerCommande()">Validate Order</button>
+      </div>
+      <div class="right-section">
+        <h2 class="titleOrder">Order Summary</h2>
+        <ul class="order-summary">
+          <li v-for="order in orders" :key="order">{{ order }}</li>
+
+        </ul>
+        <div class="total-amount">Total Amount: {{ totalAmount }}</div>
+
+      </div>
+
+    </div>
+
+
+    <div v-show="divtoShow === 0">
+      <h3>Mon profil</h3>
+    </div>
+
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        menuItems: [], // Exemple de plats
+        orders: [],
+        dishs: [],
+        divtoShow: 1,
+        transactions: [],
+        QuantityIng1:0,
+      },
+      computed: {
+        totalAmount() {
+          // Logique pour calculer le montant total de la commande
+          return this.orders.length * 10; // Exemple de calcul : 10 euros par plat
+        },
+      },
+      methods: {
+        showDiv1() {
+          this.divtoShow = 0;
+        },
+        showDiv2() {
+          this.divtoShow = 1;
+        },
+        addToOrder(item) {
+          this.orders.push(item);
+        },
+        LoadMenu(){
+          for (let i = 0; i < this.dishs.length; i++) {
+            this.menuItems.push(this.dishs[i].name);
+          }
+        },
+        AjoutDeLatransaction(ingredientT, actionT, dateT){
+          const data = {
+            ingredient: ingredientT,
+            action: actionT *-1,
+            date: new Date()
+          
+            };
+            console.log(data);
+          //Utilisation d'Axios pour envoyer les données
+          axios.post('http://localhost:8080/api/transactions/saveData', data)
+              .then(response => {
+                  console.log("ecriture : "+response.data);
+
+              })
+              .catch(error => {
+                  console.error(error);
+              });
+
+        },
+        validerCommande() {
+          commandeValideBool = true;
+          for (let i = 0; i < this.orders.length; i++) {
+            console.log(this.orders[i]);
+            const dish = this.IdIngredientToIngredient(this.orders[i]);
+            console.log("->"+dish.dishIngredients[0].ingredient.name);
+            console.log("->"+dish.dishIngredients.length);
+            for(let j = 0; j < dish.dishIngredients.length; j++){
+                this.recupererQuantiteIngredient(dish.dishIngredients[j].ingredient.id)
+                  .then(quantity => {
+                    if(quantity>=dish.dishIngredients[j].quantite){
+                      console.log(`Nous avons une quantité suffisant de ${dish.dishIngredients[j].ingredient.name}: ${quantity} et il en faut ${dish.dishIngredients[j].quantite}`);
+                      this.AjoutDeLatransaction(dish.dishIngredients[j].ingredient, dish.dishIngredients[j].quantite, new Date());
+
+                    }else {
+                      console.log(`Nous avons une quantité inssuffisant de ${dish.dishIngredients[j].ingredient.name}: ${quantity}`);
+                    }
+                  })
+                  .catch(error => {
+                    boolean = false;
+                    console.error('Erreur lors de la récupération de la quantité : ', error);
+                  });
+            
+            }
+          }
+          //Si la commande est valider alors on ecrit la commande dans la table commande
+          if(this.commandeValideBool === true){
+            //On ecrit la commande et les transactions
+
+
+
+          }else {
+            console.log("AAAAAAAAAAAAA");
+          }
+
+          //
+        },
+        IdIngredientToIngredient(name) {
+          for (let i = 0; i < this.dishs.length; i++) {
+            if (name === this.dishs[i].name) {
+              return this.dishs[i];
+            }
+          }
+          return null;
+        },
+
+
+       recupererQuantiteIngredient(idIng) {
+        return axios.get(`http://localhost:8080/api/transactions/total-quantity/${idIng}`)
+          .then(response => {
+            this.QuantityIng1 = response.data;
+            this.reponse = response.data;
+            console.log(">>>>" + this.QuantityIng1);
+            return response.data;
+          })
+          .catch(error => {
+            console.error('Erreur lors de la récupération des messages : ', error);
+            throw error;
+          });
+      }
+
+
+      },
+      mounted() {
+        console.log(">")
+        axios.get('http://localhost:8080/api/dishs/all') 
+            .then(response => {
+              this.dishs = response.data;
+              this.LoadMenu();
+            }).catch(error => {
+              console.error('Erreur lors de la récupération des données : ', error);
+            });
+            console.log("<")
+            axios.get('http://localhost:8080/api/transactions/all')
+            .then(response => {
+              this.transactions = response.data;
+            }).catch(error => {
+              console.error('Erreur lors de la récupération des données : ', error);
+            });
+           
+
+      }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Available Menus</title>
+  <style>
+   table {
+       width: 100%;
+       border-collapse: collapse;
+       margin-top: 20px;
+   }
+   
+   caption {
+       font-size: 1.2em;
+       font-weight: bold;
+       margin-bottom: 10px;
+       caption-side: bottom;
+       text-align: center;
+   }
+   
+   th, td {
+       border: 1px solid #ddd;
+       padding: 8px;
+       text-align: left;
+   }
+   
+   thead th {
+       background-color: #f2f2f2;
+   }
+   
+   tbody tr:nth-child(even) {
+       background-color: #f9f9f9;
+   }
+   
+   tbody tr:hover {
+       background-color: #ddd;
+   }
+   
+   input[type="text"], input[type="number"] {
+         width: 25%;
+         padding: 8px;
+         margin-bottom: 10px;
+         box-sizing: border-box;
+       }
+   
+       button {
+         background-color: #4caf50;
+         color: #fff;
+         padding: 10px 15px;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+         font-size: 16px;
+       }
+   
+       button:hover {
+         background-color: #45a049;
+       }
+     </style>
+</head>
+<body>
+    <h1>Available Menus</h1>
+    <a href="editMenu">Create a new menu</a>
+    <table>
+      <thead>
+        <tr>
+          <th>Menu name</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="menu : ${menuList}">
+          <td>
+            <a th:href="@{menus/{id}(id=${menu.id})}">
+                <span th:text="${menu.name}"></span>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</body>
+</html>

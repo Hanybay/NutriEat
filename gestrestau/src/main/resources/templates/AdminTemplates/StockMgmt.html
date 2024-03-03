@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" th:href="@{/style.css}" />
+  <title>Stock Management</title>
+</head>
+<body>
+  <h1>Available Stock</h1>
+  <a href="menu/AddIngredient">Add ingredient</a>
+  <div th:if="${EmptyList}">
+    <p>Your stock is empty. Add an ingredient using the form</p>
+</div>
+<div th:unless="${myBoolean}">
+  <table>
+    <caption>
+      Your Available stock of ingredients
+    </caption>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Brand</th>
+        </tr>
+    </thead>
+    <tbody>
+      <tr th:each="row : ${TransactionList}">
+
+        <!-- <td th:if="${row[0] != null}" th:text="${row[0].name}"></td>
+        <td th:if="${row[0] != null}" th:text="${row[0].category}"></td>
+        <td th:if="${row[1] != null}" th:text="${row[1]}"></td> 
+        <td th:if="${row[0] != null}" th:text="${row[0].unit}"></td>
+        <td th:if="${row[0] != null}" th:text="${row[0].marque}"></td> -->
+
+        <td  th:text="${row[0].name}"></td>
+        <td  th:text="${row[0].category}"></td>
+        <!-- Row[1] represents the calculated quantity -->
+        <td  th:text="${row[1]}"></td> 
+        <td  th:text="${row[0].unit}"></td>
+        <td  th:text="${row[0].marque}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>

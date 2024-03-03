@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GestrestauApplication<gestrestau>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.gestrestau.GestrestauApplication",
+            "projectName": "gestrestau",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

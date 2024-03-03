@@ -1,0 +1,95 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0; /* Gris clair */
+  color: #333333; /* Gris foncé */
+  margin: 0;
+  padding: 0;
+}
+.navbar {
+  background-color: #ffffff; /* Blanc */
+  padding: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  z-index: 1000; /* Assure que la barre de navigation est au-dessus */
+}
+.navbar li:hover{
+  font-weight: bold;
+}
+.container {
+  display: flex;
+  justify-content: space-between; /* Espacement égal entre les éléments */
+  align-items: flex-start; /* Aligner en haut */
+  background-color: #ffffff; /* Blanc */
+  min-height: 800px;
+  border-radius: 15px;
+  overflow: hidden; /* Cache le débordement des coins arrondis */
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Légère ombre */
+  margin-top: 20px; /* Espace au-dessus */
+  padding: 20px; /* Espacement intérieur */
+  position: relative; /* Position relative pour le bouton de validation */
+}
+.left-section {
+  flex: 1;
+  padding: 20px;
+  border-right: 1px solid #e0e0e0; /* Gris clair */
+}
+.right-section {
+  flex: 1;
+  padding: 20px;
+}
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+.menu-list li {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f5f5f5; /* Gris clair */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Légère ombre */
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transition douce */
+}
+.menu-list li:hover {
+  background-color: #e0e0e0; /* Hover plus sombre */
+  font-weight: bold;
+}
+.order-summary {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+.order-summary li {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f5f5f5; /* Gris clair */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Légère ombre */
+}
+.titleOrder {
+  text-align: center;
+  color: #333333; /* Gris foncé */
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.validate-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff; /* Bleu */
+  color: #ffffff; /* Blanc */
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Transition douce */
+  position: relative; /* Position absolue */
+  bottom: 10px; /* Espacement en haut */
+  left: 0px; /* Espacement à gauche */
+  z-index: 999; /* Assure que le bouton est au-dessus de la barre de navigation */
+}
+.validate-btn:hover {
+  background-color: #0056b3; /* Hover plus sombre */
+}
+.navbar .nav-item .active {
+font-weight: bold;
+color: #007bff; /* Couleur bleue pour la catégorie active */
+}

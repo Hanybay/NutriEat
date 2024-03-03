@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <h1>Sign up</h1>
+  <form th:action="@{/register}" method="POST" style="border:1px solid #ccc">
+    <div class="container">
+      <p>Please fill in this form to create an account.</p>
+      <hr>
+      <label for="username"><b>Name</b></label>
+      <input type="text" placeholder="name" name="username" required>
+  
+      <label for="lastname"><b>Last name</b></label>
+      <input type="text" placeholder="Enter lastname" name="lastname" required>
+  
+      <label for="email"><b>Email</b></label>
+      <input type="text" placeholder="Enter Email" name="email" required>
+  
+      <label for="passsword"><b>Password</b></label>
+      <input type="password" placeholder="Enter Password" name="password" required>
+      <div class="clearfix">
+        <button type="submit" class="signupbtn">Sign Up</button>
+      </div>
+  </form>
+
+  <form action="sendvisitor" method="post">
+    <p>Use this button if you're just a visitor</p>
+    <button type="submit" class="signupbtn">Visitor</button>
+  </form>
+</div>
+  
+</body>
+</html>

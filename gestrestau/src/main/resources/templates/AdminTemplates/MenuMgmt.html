@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Menu Management</title>
+  <style>
+    /* Styling the table in StockMgmt template */
+   table {
+       width: 100%;
+       border-collapse: collapse;
+       margin-top: 20px;
+   }
+   
+   caption {
+       font-size: 1.2em;
+       font-weight: bold;
+       margin-bottom: 10px;
+       caption-side: bottom;
+       text-align: center;
+   }
+   
+   th, td {
+       border: 1px solid #ddd;
+       padding: 8px;
+       text-align: left;
+   }
+   
+   thead th {
+       background-color: #f2f2f2;
+   }
+   
+   tbody tr:nth-child(even) {
+       background-color: #f9f9f9;
+   }
+   
+   tbody tr:hover {
+       background-color: #ddd;
+   }
+   
+   input[type="text"], input[type="number"] {
+         width: 25%;
+         padding: 8px;
+         margin-bottom: 10px;
+         box-sizing: border-box;
+       }
+   
+       button {
+         background-color: #4caf50;
+         color: #fff;
+         padding: 10px 15px;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+         font-size: 16px;
+       }
+   
+       button:hover {
+         background-color: #45a049;
+       }
+     </style>
+</head>
+<body>
+  <form th:action="@{/admin/Management/editMenu/submitMenu}" method="post"> 
+    <h1>Menu Management</h1>
+    <h2>Available dishes</h2>
+    <label for="menuName">Menu Name:</label>
+    <input type="text" id="menuName" name="menuName" required />
+    <a href="editMenu/dishCreation">Create a dish</a>
+    <div th:if="${errorMessage}" style="color: red; margin-top: 10px;">
+      <p th:text="${errorMessage}"></p>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Dish name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="dish : ${dishList}">
+          <td>
+            <label th:for="${'dish-' + dish.id}" style="display: flex; align-items: center;">
+              <input type="checkbox" th:id="${'dish-' + dish.id}" th:name="'selectedDishes'" th:value="${dish.id}" />
+              <span th:text="${dish.name}" style="margin-left: 5px;"></span>
+            </label>
+          </td>
+          <td>
+            <span th:text="${dish.price}" style="margin-left: 5px;"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
